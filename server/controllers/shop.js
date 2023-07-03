@@ -2,7 +2,6 @@ const Cart = require('../models/cart');
 const Order = require('../models/order');
 const EmailSender = require('../util/EmailSender');
 const stripe = require('stripe')(process.env.STRIPE_KEY)
-// const endpointSecret = "whsec_QvmIJAjC5OHlODS6nDHdBARPlmBBfC1l";
 const endpointSecret=process.env.STRIPE_ENDPOINT
 
 

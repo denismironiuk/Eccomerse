@@ -7,6 +7,7 @@
         "NODEMAILER_USER":"denis.mironik@gmail.com",
         "NODEMAILER_PASSWORD":"gcklwbmltqmybeip",
         "STRIPE_ENDPOINT":"whsec_6af487a7cf73b39d00dccc0ce43b188c319747828b42b0ccacd32a31003c30d7",
+        "STRIPE_ENDPOINT_PROD":"whsec_QvmIJAjC5OHlODS6nDHdBARPlmBBfC1l",
         "S3_BUCKET_NAME":"eccomerse-node-bucket",
         "S3_BUCKET_REGION":"eu-north-1",
         "S3_BUCKET_ACCESS_KEY":"AKIAZCNSC6WSFDYLEF5Q",
