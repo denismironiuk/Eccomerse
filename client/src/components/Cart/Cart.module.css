@@ -1,0 +1,97 @@
+
+
+.cart, .empty {
+  width: 80%;
+  max-width: 1200px;
+  
+  min-height: 100vh;
+  margin: 0 auto;
+}
+.empty{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  height: auto;
+}
+
+.cart .title {
+  margin: 4rem 0;
+  padding: 1rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  border-bottom: 1px solid grey;
+}
+
+.cart .subtotal,
+.cart .btn {
+  width: 20%;
+  margin: 2rem;
+}
+
+.cart .subtotal p{
+  font-size: 1.5rem;
+}
+
+.cart .checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  border-top: 1px solid grey;
+}
+
+.cart .checkout .subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart .checkout .btn button {
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  padding: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  background-color: lightblue;
+  position: relative;
+  z-index: 1;
+  color: white;
+  transition: 0.5s all ease;
+}
+
+.cart .checkout .btn button:hover {
+  cursor: pointer;
+  color: black;
+}
+
+.cart .checkout .btn button::before {
+  content: "";
+  position: absolute;
+  transition: 0.5s all ease;
+  top: 0;
+  left: 0;
+  right: 100%;
+  width: 100%;
+  bottom: 0;
+  opacity: 0;
+  background-color: red;
+  border-radius: 15px;
+}
+
+.cart .checkout .btn button:hover::before {
+  transition: 0.5s all ease;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  z-index: -1;
+}
+
+@media screen and (max-width: 768px) {
+  .cart .subtotal,
+  .cart .btn {
+    width: 50%;
+    margin: 2rem;
+    align-self: center;
+  }
+}

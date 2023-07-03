@@ -1,0 +1,132 @@
+/* Products.module.css */
+
+
+  
+  .product {
+    padding: 1.25rem 3.125rem; /* 20px 50px */
+    display: flex;
+ min-height: 67.5vh;
+    gap: 3.125rem; /* 50px */
+    
+   
+  }
+  
+  .product .left {
+    flex: 1;
+    display: flex;
+    gap: 1.25rem; /* 20px */
+  }
+  
+ 
+  
+  .product .left .images img {
+    width: 100%;
+    
+    object-fit: contain;
+    cursor: pointer;
+    margin-bottom: 0.625rem; /* 10px */
+  }
+  
+  .product .left .mainImg {
+    flex: 2;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.6);
+  }
+  
+  .product .left .mainImg img {
+    display: block;
+    max-width: 100%;
+    height: 100%;
+ 
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  
+  .product .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.875rem; /* 30px */
+  }
+  
+  .product .right .price {
+    font-size: 3.75rem; /* 30px */
+    color: #2879fe;
+    font-weight: 500;
+  }
+  
+  .product .right p {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 300;
+    text-align: justify;
+  }
+  
+  .product .right .quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem; /* 10px */
+  }
+  
+  .product .right .quantity button {
+    width: 3.125rem; /* 50px */
+    height: 3.125rem; /* 50px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .product .right .add {
+    width: 15.625rem; /* 250px */
+    padding: 0.625rem; /* 10px */
+    background-color: #2879fe;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem; /* 20px */
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+  }
+  
+  .product .right .links {
+    display: flex;
+    gap: 1.25rem; /* 20px */
+  }
+  
+  .product .right .links .item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem; /* 10px */
+    color: #2879fe;
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  .product .right .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem; /* 10px */
+    color: gray;
+    font-size: 0.875rem; /* 14px */
+    margin-top: 1.875rem; /* 30px */
+  }
+  
+  .product .right .info hr {
+    width: 12.5rem; /* 200px */
+    border: 0.0625rem solid rgb(238, 237, 237);
+  }
+  
+  .product hr {
+    border: 0.0625rem solid rgb(238, 237, 237);
+  }
+  
+  @media screen and (max-width: 48rem) { /* 768px */
+    .product {
+      display: flex;
+      flex-direction: column;
+    }
+  
+   
+  }
+  

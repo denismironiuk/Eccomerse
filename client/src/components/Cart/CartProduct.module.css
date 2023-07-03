@@ -1,0 +1,85 @@
+/* CartProduct.module.css */
+
+.cartProduct {
+  /* display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  justify-content: space-between; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-bottom: 2rem;
+  grid-gap: 1rem;
+
+}
+
+
+
+.productImage {
+  display: block;
+  max-width: 100%;
+width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+.productTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.productDescription {
+  flex: 2;
+  font-size: 14px;
+  margin-top: 5px;
+  color: #555;
+}
+
+.productCounter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+}
+
+.counterButton {
+  width: 30px;
+  
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.counterCount {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.productTotal {
+   display: flex;
+   align-items: center;
+  font-size: 16px;
+ 
+  color: #888;
+
+}
+
+@media screen and (max-width: 700px) {
+    .cartProduct{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .productTotal{
+        grid-column: 3;
+      
+    }
+    .productTotal p{
+        width: 100%;
+        text-align: center;
+    }
+    
+}

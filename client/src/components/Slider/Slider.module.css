@@ -1,0 +1,129 @@
+.slider {
+  position: relative;
+  width: 100%;
+
+  height: 600px;
+  overflow: hidden;
+
+}
+.desc{
+  position: absolute;
+  top: 0;
+  left:0;
+  bottom: 0;
+  
+
+  
+  transform: translate(-50%,-50%);
+  color: white;
+  font-size: 5rem;
+
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  display: block;
+ width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position:60% 0% ;
+  scale:1;
+
+}
+
+.caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.slider-controls {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.slider-controls label {
+  margin-right: 10px;
+}
+
+.slider-controls input[type='checkbox'] {
+  margin-right: 5px;
+}
+
+.slider-controls input[type='range'] {
+  width: 200px;
+}
+
+.cont{
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+ .autofill__input {
+border: 1px solid grey;
+width: 15rem;
+height: 5px;
+position: relative;
+margin: 1rem;
+border: none;
+background-color: grey;
+
+
+
+
+}
+@media screen and (max-width:900px) {
+  .autofill__input{
+      width: 10rem;
+
+  }
+}
+
+@media screen and (max-width:700px) {
+  .autofill__input{
+      width: 4rem;
+
+  }
+}
+
+
+.autofill__input::after {
+content: '';
+display: block;
+position: absolute;
+top: 0;
+left: 0;
+width:0;
+height: 100%;
+background-color: white;
+transition: width 1s linear ease-out;
+z-index: 99;
+opacity: 1;
+}
+
+.autofill__input.autofilled::after {
+width: 100%;
+transition-duration: 5s;
+}
