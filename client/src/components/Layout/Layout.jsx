@@ -7,10 +7,13 @@ const Layout = () => {
   const categories = data.categories;
 
   return (
-    <div className="app">
+    <div className="app" >
         <ToastContainer/>
       <Navbar categories={categories} />
-      <Outlet />
+      <main className="main">
+      <Outlet  />
+      </main>
+      
       <Footer />
     
     </div>

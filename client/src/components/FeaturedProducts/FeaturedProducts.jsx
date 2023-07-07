@@ -1,5 +1,4 @@
 import React from "react";
-import Card from "../Card/Card";
 import styles from "./FeaturedProducts.module.css";
 import useFetch from "../../hooks/useFetch";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,7 +11,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 const FeaturedProducts = ({ type }) => {
-  const { data, loading, error } = useFetch(`/products`);
+  const { data, loading} = useFetch(`/products`);
 
  console.log(data)
 

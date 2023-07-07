@@ -1,8 +1,8 @@
 // CartProduct.js
 
-import React, { useContext, useState } from 'react';
+
 import styles from './CartProduct.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import {addItemToCart,removeItemFromCart} from '../../redux/cartReducer'
 
 const CartProduct = ({ title, description, image,quantity,id,price,totalPrice }) => {

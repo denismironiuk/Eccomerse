@@ -47,6 +47,22 @@
     position: fixed;
     left: -100%;
   }
+  .navbar .item__logout{
+    display: flex;
+    align-items: center;
+  }
+  .navbar .item__action button{
+
+border: none;
+color:white;
+align-self: center;
+background-color: transparent;
+font-size: 2rem;
+  }
+
+  .navbar .item__auth{
+    color:white;
+  }
   
   @keyframes fadeIn {
     0% {

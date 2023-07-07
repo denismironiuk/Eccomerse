@@ -4,18 +4,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import Cart from "../Cart/Cart";
 import { useSelector } from "react-redux";
 
+const Navbar = ({ categories }) => {
+  const isLoggedIn = localStorage.getItem("token") || null;
 
-const Navbar = ({categories}) => {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-
 
   const handleMenu = () => {
     setOpenMenu(!openMenu);
@@ -27,7 +27,10 @@ const Navbar = ({categories}) => {
         <div className={styles.menu} onClick={handleMenu}>
           <MenuIcon style={{ fontSize: "2.5rem" }} />
         </div>
-        <div className={openMenu ? styles.mobile : styles.close}onClick={handleMenu} >
+        <div
+          className={openMenu ? styles.mobile : styles.close}
+          onClick={handleMenu}
+        >
           <div
             style={{
               textAlign: "end",
@@ -79,14 +82,12 @@ const Navbar = ({categories}) => {
             <SearchIcon style={{ fontSize: "25px" }} />
             <PersonOutlineOutlinedIcon style={{ fontSize: "25px" }} />
             <FavoriteBorderOutlinedIcon style={{ fontSize: "25px" }} />
-            <div
-              className={styles.cartIcon}
-              onClick={() => setOpen(!open)}
-            >
+            <div className={styles.cartIcon} onClick={() => setOpen(!open)}>
               <ShoppingCartOutlinedIcon style={{ fontSize: "25px" }} />
             </div>
           </div>
         </div>
+
         <div className={styles.icons}>
           <div className={styles.cartIcon}>
             <Link to={"/cart"}>
@@ -96,6 +97,20 @@ const Navbar = ({categories}) => {
               <span>{totalQuantity}</span>
             </Link>
           </div>
+          {!isLoggedIn && (
+            <div className={styles.item__auth}>
+              <Link to={"/auth?mode=login"} className={styles.link}>
+                Log In
+              </Link>
+            </div>
+          )}
+          {isLoggedIn && (
+            <div className={styles.item__action}>
+              <Form action="/logout" method="post">
+                <button>Logout</button>
+              </Form>
+            </div>
+          )}
         </div>
       </div>
       {open && <Cart />}

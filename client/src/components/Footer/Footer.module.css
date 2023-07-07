@@ -19,13 +19,13 @@
   font-size: 14px;
 }
 
-h1 {
+.h1 {
   font-size: 18px;
   font-weight: 500;
   color: #555;
 }
 
-span {
+.span {
   color: gray;
 }
 

@@ -6,7 +6,7 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+     
     },
     email: {
       type: String,
@@ -16,14 +16,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    // status: {
-    //   type: String,
-    //   required: true,
-    // },
-    contacts: [{
-        type:Schema.Types.ObjectId,
-        ref:'Contact'
-    }],
+    cart: {
+      type: Schema.Types.ObjectId,
+      ref: 'Cart'
+    }
   },
   { timestamps: true }
 );

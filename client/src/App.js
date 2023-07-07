@@ -1,96 +1,145 @@
-import { useState,useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import Home from "./pages/Home/Home";
-import Product from "./pages/Product/Product";
-import Products, { productsLoader } from "./pages/Products/Products";
-import  "./app.css"
+import Product, { loader as singleProduct } from "./pages/Product/Product";
+import Products, { loader as productsLoader } from "./pages/Products/Products";
+import "./app.css"
 import "react-toastify/dist/ReactToastify.css"
-import { replaceCart } from "./redux/cartReducer";
 import Cart from "./components/Cart/Cart";
-import { useDispatch, useSelector } from "react-redux";
 import SuccessPage from "./pages/SuccessPage/SuccessPage";
 import ErrorPaymentPage from "./pages/ErrorPaymentPage/ErrorPaymentPage";
-import LoadingPage from "./pages/LoadingPage/LoadingPage";
-import Layout, { catLoader, loader } from "./components/Layout/Layout";
-
-
-
-
+import Layout, { catLoader, } from "./components/Layout/Layout";
+import AuhenticationPage, { action as authAction } from "./pages/Authentication/Auhentication";
+import { action as logoutAction } from './pages/Logout/Logout'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {replaceCart as replace} from './redux/cartReducer'
+let firstRender = false
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>, loader:catLoader,
+    element: <Layout />,
+    loader: catLoader,
+
     children: [
       {
-        index:true,
-        element: <Home />,
+        index: true, element: <Home />
+      },
+      {
+        path: "auth",
+        element: <AuhenticationPage />,
+        action: authAction
       },
       {
         path: "cart",
-        element: <Cart/>,
+        element: <Cart />,
       },
       {
         path: "/success",
-        element: <SuccessPage/>,
+        element: <SuccessPage />,
       },
       {
         path: "/error",
-        element: <ErrorPaymentPage/>,
+        element: <ErrorPaymentPage />,
       },
-  
+      {
+        path: 'logout',
+        action: logoutAction
+      },
+
+
       {
         path: "/products/:categoryName/:id",
-        element: <Products />, loader:productsLoader
+        element: <Products />, loader: productsLoader
       },
       {
         path: "/product/:categoryName/:subcategoryName/:id",
-        element: <Product />,
+        element: <Product />, loader: singleProduct
       },
     ],
   },
 ]);
 
 function App() {
-  const dispatch = useDispatch();
-  const [sessionId, setSessionId] = useState("");
-  const cart = useSelector((state) => state.cart);
-  useEffect(() => {
-    // Check if the sessionId exists in localStorage
-    const existingSessionId = localStorage.getItem("sessionId");
 
-    if (existingSessionId) {
-      setSessionId(existingSessionId);
-    } else {
-      // Generate a new sessionId
-      const newSessionId = uuidv4();
-      localStorage.setItem("sessionId", newSessionId);
-      setSessionId(newSessionId);
-    }
-  }, []);
-
+  const cart = useSelector((state) => state.cart)
+  console.log(cart)
+  const dispatch=useDispatch()
   useEffect(() => {
-    const fetchData = async () => {
-      if (sessionId) {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_ENDPOINT}/cart?sessionId=${sessionId}`
-        );
-        const data = await response.json();
-        dispatch(replaceCart(data.cart));
-      }
+
+    console.log('in effect')
+    const token = localStorage.getItem('token');
+    const authHeader = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     };
-    fetchData();
-  }, [sessionId,dispatch]);
+    
+    if (token) {
+      if (!firstRender) {
+        console.log('in first render')
+        async function retrieveCart() {
+          try {
+            if(cart) {
+              const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/cart`, {
+                method: "GET",
+                headers: authHeader
+              })
+  
+             
+         
+              const resData =await response.json();
+              const { cart } = resData;
+              const cartItems = cart.items
+              const persistedState = {
+                items: cartItems,
+                totalPrice: resData.cart.totalPrice,
+                totalQuantity: resData.cart.totalQuantity,
+              };
+              console.log("here")
+              // localStorage.setItem("persist:root", JSON.stringify(persistedState));
+              dispatch(replace(persistedState))
+            }
+            
+            
+          } catch (e) {
+            console.log('error')
+          }
+        }
+        retrieveCart()
+      }
+      else {
+        async function replaceCart(cartItems) {
 
-  useEffect(() => {
-    if (sessionId) {
-      fetch(`${process.env.REACT_APP_API_ENDPOINT}/cart/${sessionId}`, {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify(cart),
-      });
+
+          try {
+            const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/cart`, {
+              method: 'POST',
+              headers: authHeader,
+              body: JSON.stringify({ cartItems }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to replace cart');
+            }
+
+            const responseData = await response.json();
+            return responseData;
+          } catch (error) {
+            console.log(error);
+            // Handle the error as needed
+          }
+
+        }
+        replaceCart(cart)
+      }
+
+
+
+      
     }
-  }, [cart,sessionId]);
+    firstRender=true
+
+  }, [cart,dispatch])
+
   return (
     <div>
       <RouterProvider router={router} />

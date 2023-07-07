@@ -1,38 +1,18 @@
-import React, { useEffect, useMemo } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { Await, defer, useLoaderData } from "react-router-dom";
 import List from "../../components/List/List";
 import styles from "./Products.module.css";
+import CategoriesList from "../../components/CategoriesList/CategoriesList";
 
 const Products = () => {
-  const data = useLoaderData();
-  const products = data.products;
-
-  //  console.log(data);
-  const catId = useParams().id;
-  console.log(catId);
+  const { subCat, products } = useLoaderData();
   const [maxPrice, setMaxPrice] = useState(1000);
   const [sort, setSort] = useState(null);
-  const [subCategory, setSubcategories] = useState([]);
   const [selectedSubCats, setSelectedSubCats] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/subcategories/${catId}`)
-      .then((response) => response.json())
-      .then((resData) => {
-        setSubcategories(resData.subcategories);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, [catId]);
-
   const handleChange = (e) => {
-    console.log("value: " + e.target.value, "checked: " + e.target.checked);
     const value = e.target.value;
     const isChecked = e.target.checked;
 
@@ -55,7 +35,7 @@ const Products = () => {
           return selectedSubCats.includes(product.subcategory._id);
         });
       }
-      console.log(filteredProducts);
+      // console.log(filteredProducts);
 
       // Filter by price range
       filteredProducts = filteredProducts.filter(
@@ -78,20 +58,16 @@ const Products = () => {
   return (
     <div className={styles.products}>
       <div className={styles["products__left"]}>
-        <div className={styles.filterItem}>
-          <h2>Product Categories</h2>
-          {subCategory?.map((item) => (
-            <div className={styles.inputItem} key={item._id}>
-              <input
-                type="checkbox"
-                id={item._id}
-                value={item._id}
-                onChange={handleChange}
+        <Suspense>
+          <Await resolve={subCat}>
+            {(loadedSubCat) => (
+              <CategoriesList
+                subCategory={loadedSubCat}
+                handleChange={handleChange}
               />
-              <label htmlFor={item._id}>{item.subcategoryName}</label>
-            </div>
-          ))}
-        </div>
+            )}
+          </Await>
+        </Suspense>
         <div className={styles.filterItem}>
           <h2>Filter by price</h2>
           <div className={styles.inputItem}>
@@ -132,11 +108,6 @@ const Products = () => {
       </div>
 
       <div className={styles["products-right"]}>
-        {/* <img
-          className={styles.catImg}
-          src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
-          alt=""
-        /> */}
         <List products={filteredProducts} />
       </div>
     </div>
@@ -145,17 +116,32 @@ const Products = () => {
 
 export default Products;
 
-export async function productsLoader({ request, params }) {
-  const catId = params.id;
+export async function loadSubCat(catId) {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/subcategories/${catId}`
+  );
+  if (!response.ok) {
+  } else {
+    const resData = await response.json();
+    return resData.subcategories;
+  }
+}
 
-  console.log(catId);
-
+export async function loadProducts(catId) {
   const response = await fetch(
     `${process.env.REACT_APP_API_ENDPOINT}/products/${catId}`
   );
   if (!response.ok) {
   } else {
     const resData = await response.json();
-    return resData;
+    return resData.products;
   }
+}
+
+export async function loader({ request, params }) {
+  const catId = params.id;
+  return defer({
+    subCat: loadSubCat(catId),
+    products: await loadProducts(catId),
+  });
 }

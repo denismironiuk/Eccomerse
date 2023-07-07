@@ -35,14 +35,14 @@ const Cart = () => {
             img: product.img
           }
         }),
-        id:localStorage.getItem("sessionId")
+        id:localStorage.getItem("token")
       }),
     })
       .then((res) => {
         return res.json();
       })
       .then((resData) => {
-      
+      localStorage.removeItem("persist:root")
         window.location.href = resData.session.url;
         console.log(resData);
       });

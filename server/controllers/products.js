@@ -3,12 +3,12 @@ const Product = require('../models/index');
 const Subcategory = require('../models/SubCategory');
 const fs = require('fs');
 
-// Configuration 
-cloudinary.config({
-  cloud_name: "dlhwu41bv",
-  api_key: "111198594715399",
-  api_secret: "-zZuSTuwtPh7nY_srIi849AbWbc"
-});
+// // Configuration 
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_API_NAME,
+//   api_key:process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET_KEY
+// });
 
 exports.getProducts = (req, res, next) => {
   Product.find()

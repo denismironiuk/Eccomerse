@@ -16,7 +16,7 @@ const Slider = ({ slides, interval }) => {
     return () => {
       clearInterval(slideInterval);
     };
-  }, [ interval]);
+  }, [ interval,slides.length]);
 
   return (
     <>

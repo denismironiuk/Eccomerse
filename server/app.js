@@ -28,6 +28,7 @@ const authRoutes=require('./routes/auth')
 const catRoutes=require('./routes/category')
 const subCatRoutes=require('./routes/subcategory')
 const orderRoutes=require('./routes/order')
+const cartRoutes=require('./routes/cart')
 
 const accessLogStream= fs.createWriteStream(
   path.join(__dirname, 'access.log'),
@@ -69,8 +70,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+app.use('/api',orderRoutes)
 app.use('/api',prodRoutes)
 app.use('/api',authRoutes)
+app.use('/api',cartRoutes)
 app.use('/api',catRoutes)
 app.use('/api',subCatRoutes)
 
@@ -83,7 +86,7 @@ app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
-  res.status(status).json({ message: message, data: data });
+  res.status(status).json({ message: message, error: data });
 });
 
 mongoose
