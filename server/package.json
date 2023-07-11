@@ -37,6 +37,7 @@
     "pdfjs-dist": "^3.8.162",
     "pdfkit": "^0.13.0",
     "s3-proxy": "^1.2.1",
+    "streamifier": "^0.1.1",
     "stripe": "^12.8.0",
     "uuid": "^9.0.0"
   }

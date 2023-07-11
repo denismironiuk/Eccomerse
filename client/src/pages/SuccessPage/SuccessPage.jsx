@@ -1,9 +1,14 @@
-import React from 'react'
+
 
 const SuccessPage = () => {
-  return (
-    <div>Congratulation!!! Your payment successed</div>
-  )
-}
+  
 
-export default SuccessPage
+  return (
+    <div>
+      <h1>Success Page</h1>
+      {/* Display success message or error message */}
+    </div>
+  );
+};
+
+export default SuccessPage;

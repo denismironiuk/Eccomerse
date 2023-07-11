@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
+import React, { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Form, Link } from "react-router-dom";
+import {Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import Cart from "../Cart/Cart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import AuthContext from "../../context/authContext";
+import {emptyCard,emptyCardSuccess} from '../../redux/cartReducer'
+import AsidePanel from "../AsidePanel/AsidePanel";
+import UserLogo from "../UI/UserLogo/UserLogo";
 
 const Navbar = ({ categories }) => {
-  const isLoggedIn = localStorage.getItem("token") || null;
+const {isLoggedIn,logout,userData}=useContext(AuthContext)
+const dispatch=useDispatch()
 
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -21,42 +23,20 @@ const Navbar = ({ categories }) => {
     setOpenMenu(!openMenu);
   };
 
+  const handleLogout=()=>{
+    dispatch(emptyCardSuccess())
+    setOpenMenu(false)
+   logout()
+
+  }
+
   return (
     <div className={styles.navbar}>
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} >
         <div className={styles.menu} onClick={handleMenu}>
           <MenuIcon style={{ fontSize: "2.5rem" }} />
         </div>
-        <div
-          className={openMenu ? styles.mobile : styles.close}
-          onClick={handleMenu}
-        >
-          <div
-            style={{
-              textAlign: "end",
-              padding: "1rem",
-              color: "white",
-              fontSize: "2rem",
-            }}
-            onClick={handleMenu}
-          >
-            X
-          </div>
-          <ul>
-            {categories.map((category) => {
-              return (
-                <li key={category._id}>
-                  <Link
-                    className={styles.link}
-                    to={`products/${category.categoryName}/${category._id}`}
-                  >
-                    {category.categoryName}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <AsidePanel openMenu={openMenu} handleMenu={handleMenu} categories={categories} handleLogout={handleLogout} isLoggedIn={isLoggedIn} userData={userData}/>
         <div className={styles.center}>
           <Link className={styles.link} to="/">
             Shopping Store
@@ -65,7 +45,7 @@ const Navbar = ({ categories }) => {
         <div className={styles.left}>
           {categories.map((category) => {
             return (
-              <div className={styles.item} key={category._id}>
+              <div className={styles.item} key={category._id} >
                 <Link
                   className={styles.link}
                   to={`products/${category.categoryName}/${category._id}`}
@@ -75,17 +55,6 @@ const Navbar = ({ categories }) => {
               </div>
             );
           })}
-        </div>
-
-        <div className={styles.right} style={{ display: "none" }}>
-          <div className={styles.icons}>
-            <SearchIcon style={{ fontSize: "25px" }} />
-            <PersonOutlineOutlinedIcon style={{ fontSize: "25px" }} />
-            <FavoriteBorderOutlinedIcon style={{ fontSize: "25px" }} />
-            <div className={styles.cartIcon} onClick={() => setOpen(!open)}>
-              <ShoppingCartOutlinedIcon style={{ fontSize: "25px" }} />
-            </div>
-          </div>
         </div>
 
         <div className={styles.icons}>
@@ -105,11 +74,17 @@ const Navbar = ({ categories }) => {
             </div>
           )}
           {isLoggedIn && (
-            <div className={styles.item__action}>
-              <Form action="/logout" method="post">
-                <button>Logout</button>
-              </Form>
+            // <div className={styles.item__action}>
+             
+            //     <button onClick={handleLogout}>Logout</button>
+              
+            // </div>
+            <div>
+            <Link to={`user`}>
+            <UserLogo content='header_logo' userData={userData}/>
+            </Link>
             </div>
+            
           )}
         </div>
       </div>

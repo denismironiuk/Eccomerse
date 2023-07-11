@@ -1,17 +1,17 @@
 const Cart = require('../models/cart');
 const stripe = require('stripe')(process.env.STRIPE_KEY)
-const endpointSecret = process.env.STRIPE_ENDPOINT
+const endpointSecret = process.env.STRIPE_ENDPOINT_PROD
 
 const jwt = require('jsonwebtoken')
-const { createOrder } = require('./order')
+const { createOrder } = require('../helpers/index')
 
 
 
 const addTostripe = async (req, res, next) => {
-
+  console.log(req.body.products)
   const customer = await stripe.customers.create({
     metadata: {
-      userId: req.body.id,
+      userId: req.userId,
       cart: JSON.stringify(req.body.products)
     },
   });
@@ -21,7 +21,7 @@ const addTostripe = async (req, res, next) => {
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item.name, 
+          name: item.name,
           images: [item.img],
           metadata: {
             id: item.id.toString(),
@@ -85,7 +85,7 @@ const addTostripe = async (req, res, next) => {
       enabled: true,
     },
     mode: 'payment',
-    success_url: 'http://localhost:3000/cart',
+    success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: 'https://eccomerse-deplyment-demo.web.app/cart',
   });
 
@@ -106,7 +106,7 @@ const stripeWebhook = async (req, res) => {
   if (endpointSecret) {
     let event;
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
     } catch (err) {
       console.log(`Webhook Error: ${err.message}`)
       res.status(400).send(`Webhook Error: ${err.message}`);
@@ -126,33 +126,35 @@ const stripeWebhook = async (req, res) => {
 
   if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer).then(customer => {
-      createOrder(customer, data)
-
       const userData = customer.metadata.userId;
-      const userId = jwt.verify(userData, 'secret')
-
-      console.log(userId.userId)
-
-      Cart.findOneAndUpdate({ user: userId.userId }, { items: [], totalQuantity: 0, totalPrice: 0 }, { new: true })
+      console.log(userData);
+      Cart.findOneAndUpdate({ user: userData }, { items: [], totalQuantity: 0, totalPrice: 0 }, { new: true })
         .then(response => {
-          console.log("UpdatedCart: ", response)
           return response.save()
         })
-    })
+        .catch(err => {
+          console.log(err);
+        })
 
-      .catch(err => {
-        console.log(err.message)
+      createOrder(customer, data)
+
+      
+
+
+
+
+
       })
-  }
 
-  res.status(200).json({ message: 'success' })
-
-}
-
+      res.status(200).json({ message: 'success' })
+    }
+    }
+// 
+ 
 module.exports = {
 
-  stripeWebhook,
+        stripeWebhook,
 
-  addTostripe,
-};
+        addTostripe,
+      }; 
 

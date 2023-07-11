@@ -57,7 +57,7 @@ const Products = () => {
 
   return (
     <div className={styles.products}>
-      <div className={styles["products__left"]}>
+      <div className={styles.products__left}>
         <Suspense>
           <Await resolve={subCat}>
             {(loadedSubCat) => (

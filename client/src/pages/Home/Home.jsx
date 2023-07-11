@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Categories from '../../components/Categories/Categories'
 
 import FeaturedProducts from '../../components/FeaturedProducts/FeaturedProducts'
 import Slider from '../../components/Slider/Slider'
 
 import styles from './Home.module.css'
+import { Await, defer, useLoaderData } from 'react-router-dom'
 
 const slides = [
   {
@@ -26,15 +27,68 @@ const slides = [
 ];
 
 const Home = () => {
+
+  const{lastAdded,products}=useLoaderData()
+
+  console.log(lastAdded)
+
   return (
     <div className={styles.home}>
       <Slider slides={slides}  interval={5000} />
-      <FeaturedProducts type="featured"/>
+      <Suspense>
+        <Await resolve={products}> 
+        {(loadedProducts)=>(
+          <FeaturedProducts data={loadedProducts} type="featured"/>
+        )}
+        
+        </Await>
+      </Suspense>
+      
       <Categories/>
-      <FeaturedProducts type="trending"/>
+      <Suspense>
+        <Await resolve={lastAdded}> 
+        {(loadedLastAdded)=>(
+          <FeaturedProducts data={loadedLastAdded} type="Last Added"/>
+        )}
+        
+        </Await>
+      </Suspense>
+   
      
     </div>
   )
 }
 
 export default Home
+
+export async function lastAddedProducts() {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/productLast`
+  );
+  if (!response.ok) {
+  } else {
+    const resData = await response.json();
+    
+    return resData.products
+  }
+}
+
+export async function loadProducts() {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/products`
+  );
+  if (!response.ok) {
+  } else {
+    const resData = await response.json();
+    return resData.products;
+  }
+}
+
+export async function loader() {
+  
+
+  return defer({
+    lastAdded:lastAddedProducts(),
+    products: loadProducts(),
+  });
+}

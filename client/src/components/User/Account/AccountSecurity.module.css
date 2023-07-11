@@ -1,0 +1,123 @@
+.container {
+  width: 90%;
+ 
+  min-height: 60vh;
+  margin: 0 auto;
+}
+.container .title {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 1px solid grey;
+}
+.container .title h2 {
+  padding: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 2.4rem;
+  max-width: 36em;
+  font-size: 2.4rem;
+}
+.container .title p {
+  padding: inherit;
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 1.6rem;
+}
+
+.container .wrapper {
+  border-top: 1px solid #d1d7dc;
+  padding-top: 2.4rem;
+  margin-top: 2.4rem;
+}
+
+.container .wrapper .error{
+    background-color: #FCAEA0;
+    margin: 2rem 0;
+    padding: 3rem 2rem;
+    font-weight: bold;
+    color: black;
+    font-size: 1.5rem;
+}
+.container .wrapper .input{
+    position: relative;
+}
+.container .wrapper .input i{
+    position: absolute;
+    right: 2%;
+    top:25%
+}
+.container .wrapper .input input{
+    width: 100%;
+    
+}
+.container .wrapper .edit__container {
+  margin: 0 auto;
+
+  padding: 0 2.4rem;
+}
+.container .wrapper .edit__container h2 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 1.4rem;
+  padding-bottom: 0.8rem;
+}
+
+.container .wrapper .edit__container .edit__email {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.container .wrapper .edit__container .edit__email p {
+  width: 100%;
+  padding: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 1.6rem;
+  
+  
+}
+.container .wrapper .edit__container .edit__email p span{
+    font-weight: bold;
+    
+}
+
+.container .wrapper .edit__container .edit__email .edit__icon{
+    padding: 1rem;
+    border-left: 1px solid black;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.container .wrapper .edit__container .edit__password form{
+display: flex;
+flex-direction: column;
+}
+
+.container .wrapper .edit__container .edit__password form input{
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.container .wrapper .edit__container .edit__password form .button{
+    margin-top: 1rem;
+    cursor: pointer;
+    
+   
+}
+.container .wrapper .edit__container .edit__password form .button button{
+    padding: 1.4rem 1rem;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    font-size: 1.5rem;
+}
+.container .wrapper .edit__container .edit__password form .button button:hover{
+background-color: rgb(109, 105, 105);
+}

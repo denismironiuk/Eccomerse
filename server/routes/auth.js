@@ -1,5 +1,5 @@
 const express = require('express');
-
+const upload = require('./../helpers/multer/multer')
 const User = require('../models/user');
 
 const { body } = require('express-validator');
@@ -28,6 +28,8 @@ router.post(
 
 router.post('/login', userController.login);
 
-router.post('/update/',isAuth,userController.changeUserPassword);
+router.post('/update/password',isAuth,userController.changeUserPassword);
 
+router.post('/update/image',isAuth,upload.single('image'),userController.updateUserImage)
+router.post('/update/email',isAuth,userController.updateUserEmail)
 module.exports = router;

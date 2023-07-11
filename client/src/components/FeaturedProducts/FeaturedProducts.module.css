@@ -11,14 +11,14 @@
   margin-bottom: 50px;
 }
 
-h1 {
+.h1 {
   text-transform: capitalize;
   padding: 2rem 0;
 }
 
 p {
   color: gray;
-  padding: 1rem;
+  
 }
 
 .bottom {

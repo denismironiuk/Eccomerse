@@ -1,0 +1,118 @@
+
+
+.mobile {
+  border: 1px solid rgb(211, 206, 206);
+  width: 100vw;
+ height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(82, 78, 78, 0.89);
+  z-index: 99;
+  display: flex;
+
+  
+}
+.mobile .closeIcon {
+  color: white;
+
+  position: relative;
+  left: 72%;
+  top: 1%;
+  width: 4rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 50%;
+}
+.mobile .closeIcon span {
+  color: black;
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mobile ul {
+  
+  background-color: whitesmoke;
+  color: black;
+  
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+
+  
+  position: absolute;
+
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 0;
+  display: flex;
+  justify-content: space-between;
+ 
+}
+.mobile ul div{
+    padding: 0 1rem;
+}
+.mobile ul .user__header {
+  padding: 1rem 0 3rem;
+
+  display: flex;
+
+  align-items: center;
+  gap: 2rem;
+  border-bottom: 1px solid grey;
+}
+.mobile ul .user__auth{
+  display: block;
+  padding:1rem 0;
+  margin: 0;
+}
+.mobile ul .user__auth a{
+  display: block;
+  width: 100%;
+ 
+  padding:1rem 0;
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 1.6rem;
+}
+
+.mobile ul .categories{
+    padding: 2rem 0;
+    border-bottom: 1px solid grey;
+}
+.mobile ul .categories li{
+    
+    padding-top: 1rem;
+    font-size: 1.5rem;
+   
+}
+
+
+.mobile ul li {
+  align-self: start;
+}
+
+.close {
+  position: fixed;
+  left: -100%;
+}
+.logout{
+  
+    border: 1px solid rgb(192, 191, 191);
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 10vh;
+   
+}
+ul .logout a{
+    display: block;
+text-align: center;
+text-transform: none;
+padding:1rem 0 ;
+font-size: 2rem;
+
+}

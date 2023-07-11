@@ -5,8 +5,11 @@ const addToCart = async (req, res, next) => {
   const userId = req.userId;
 
 
+
   try {
     const cart = await Cart.findOne({ user: userId });
+
+    
     cart.totalQuantity = req.body.cartItems.totalQuantity;
     cart.totalPrice = req.body.cartItems.totalPrice
     cart.items = req.body.cartItems.items;

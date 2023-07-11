@@ -1,28 +1,15 @@
 const fs=require('fs');
 const path=require('path');
-const https=require('https')
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const { S3Client} = require("@aws-sdk/client-s3");
-const multer = require('multer');
-const multerS3 = require('multer-s3')
 const mongoose = require('mongoose');
 const morgan=require('morgan')
 const helmet=require('helmet')
 const compression =require('compression')
+
 //
 const PORT = process.env.PORT || 8080;
-
-const s3 = new S3Client({
-credentials:{
-  accessKeyId:process.env.S3_BUCKET_ACCESS_KEY,
-  secretAccessKey:process.env.S3_BUCKET_SECRET_KEY,
-},
-region:process.env.S3_BUCKET_REGION
-})
-
-
 const prodRoutes = require('./routes/products');
 const authRoutes=require('./routes/auth')
 const catRoutes=require('./routes/category')
@@ -41,7 +28,7 @@ const accessLogStream= fs.createWriteStream(
 app.use(helmet())
 app.use(compression())
 app.use(morgan('combined',{stream:accessLogStream}))
-app.use('/api',orderRoutes)
+
 app.use(
   bodyParser.json({
       verify: function(req, res, buf) {
@@ -51,16 +38,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
-app.use(multer({storage:multerS3({
-  s3:s3,
-  bucket:process.env.S3_BUCKET_NAME,
-  metadata: function (req, file, cb) {
-    cb(null, {fieldName: file.fieldname});
-  },
-  key: function (req, file, cb) {
-    cb(null, Date.now().toString()+'-'+file.originalname)
-  }
-})}).single('image'))
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
@@ -70,6 +48,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
 app.use('/api',orderRoutes)
 app.use('/api',prodRoutes)
 app.use('/api',authRoutes)

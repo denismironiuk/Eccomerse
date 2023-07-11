@@ -2,14 +2,16 @@ const jwt = require('jsonwebtoken');
 
 function createToken(data){
 
-    const{email,userId}=data
+    const{email,_id}=data
+
+    console.log(email)
     const token = jwt.sign(
         {
           email,
-          userId,
+          userId:_id.toString()
         },
         'secret',
-        { expiresIn: '4h' }
+       
       );
 
       return token

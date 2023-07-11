@@ -1,0 +1,62 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  width: 90%;
+  background-color: white;
+  padding: 2rem 2rem 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.modalContent form {
+  padding: 2rem 0;
+}
+.modalContent form {
+  display: flex;
+  flex-direction: column;
+}
+.modalContent form .button {
+  align-self: flex-end;
+  cursor: pointer;
+}
+.modalContent form .button button {
+  padding: 1rem 2rem;
+  color: white;
+  font-weight: bold;
+  background-color: black;
+}
+.modalContent form div {
+  padding: 1rem 0;
+}
+.modalContent form .button button:hover{
+    background-color: rgb(66, 65, 65);
+}
+.modalContent form div input {
+  width: 100%;
+  padding: 0.7rem;
+}
+.modalContent .modalContent__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: rem 0;
+}
+.modalContent .modalContent__title h2 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 1.9rem;
+}
+.error {
+  color: red;
+  margin-top: 10px;
+}

@@ -1,0 +1,71 @@
+.container{
+    width: 98%;
+    max-width: 1200px;
+   
+    margin-inline: auto;
+}
+
+.container .wrapper{
+    
+    display: flex;
+   flex-direction: column;
+}
+.container .wrapper > div{
+   
+}
+
+.container .wrapper .flex{
+    padding: 4rem 0;
+    display: flex;
+    border-bottom:1px solid grey;
+   justify-content: space-between;
+ 
+
+    
+}
+.container .wrapper .second__block{
+    border: none;
+    padding: 4rem 0;
+}
+.container .wrapper .second__block .description{
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+
+.container .wrapper .third__block{
+   
+    padding-bottom: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 1rem;
+    border-bottom: 1px solid grey;
+    
+}
+
+.container .wrapper .third__block span:not(:first-child),
+.container .wrapper .third__block p:not(:first-child)
+{
+    text-align: center;
+    
+}
+.container .wrapper .third__block span:last-child,
+.container .wrapper .third__block p:last-child
+{
+    text-align: end;
+}
+.container .wrapper .third__block span{
+    font-size: clamp(1.5rem, -6rem + 16vw, 3rem);
+}
+.container .wrapper .third__block p,
+.container .wrapper .fourth__block p
+{
+    font-size: 1.5rem;
+    padding: 0.5rem;
+}
+.container .wrapper .fourth__block{
+    padding: 2rem 0;
+    justify-self:flex-end;
+    text-align: end;
+
+}

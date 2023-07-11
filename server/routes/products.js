@@ -1,7 +1,8 @@
 const express = require('express')
 
-const { getProducts, addProduct, getFilteredProducts, getSingleProduct } = require('../controllers/products');
+const { getProducts, addProduct, getFilteredProducts, getSingleProduct,getLastAddedProducts } = require('../controllers/products');
 const { addTostripe } = require('../controllers/stripe');
+const isAuth = require('../middleware/is-auth');
 const router = express.Router()
 
 
@@ -14,7 +15,7 @@ router.get('/product/:prodId', getSingleProduct)
 
 router.get('/products/:catId', getFilteredProducts)
 router.post('/product', addProduct)
-
+router.get('/productLast', getLastAddedProducts)
 
 //Cart
 
@@ -22,7 +23,7 @@ router.post('/product', addProduct)
 
 router.get('/checkout')
 
-router.post('/create-checkout-session', addTostripe)
+router.post('/create-checkout-session',isAuth, addTostripe)
 
 // router.post('/webhook',stripeWebhook);
 

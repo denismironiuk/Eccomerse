@@ -33,7 +33,7 @@ router.post('/subcategory', async (req, res) => {
   try {
     const { subcategoryName, categoryId } = req.body;
     const subcategory = new SubCategory({
-      subcategoryName,
+      subcategoryName, 
       category: categoryId,
     });
     await subcategory.save();

@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Cart.module.css";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useSelector } from "react-redux";
 import { emptyCard } from "../../redux/cartReducer";
 import { useDispatch } from "react-redux";
+import AuthContext from "./../../context/authContext";
+import {retrieveSessionData} from '../../helper/index'
 
 import CartProduct from "./CartProduct";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
+  const { token, isLoggedIn } = useContext(AuthContext);
+
   const products = useSelector((state) => state.cart.items);
   const { totalQuantity, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -19,35 +25,72 @@ const Cart = () => {
       </div>
     );
 
-  const handleCheckout = () => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "/create-checkout-session", {
-      headers: {
-        "Content-type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        products: products.map(product =>{
-          return {
-            id: product._id,
-            name: product.name,
-            price:product.price,
-            quantity:product.quantity,
-            img: product.img
+  const handleCheckout = async () => {
+    if (!isLoggedIn) {
+      // User is not logged in, show the login form popup
+      navigate("/auth?mode=login");
+    } else {
+      try {
+
+      
+
+        const response = await fetch(
+          process.env.REACT_APP_API_ENDPOINT + "/create-checkout-session",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              products: products.map((product) => {
+                return {
+                  id: product._id,
+                  name: product.name,
+                  price: product.price,
+                  quantity: product.quantity,
+                  img: product.img,
+                };
+              }),
+            }),
           }
-        }),
-        id:localStorage.getItem("token")
-      }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((resData) => {
-      localStorage.removeItem("persist:root")
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create checkout session");
+        }
+
+        const resData = await response.json();
+        const { sessionId } = resData;
+
+        // Set the session data in local storage
+        const sessionData = {
+          sessionId: sessionId,
+          paymentStatus: "pending",
+        };
+        localStorage.setItem("sessionData", JSON.stringify(sessionData));
+
+        // Redirect to the checkout page
         window.location.href = resData.session.url;
-        console.log(resData);
-      });
+        updateSessionData();
+      } catch (error) {
+        console.log(error);
+        // Handle the error as needed
+      }
+    }
   };
 
+  const updateSessionData = () => {
+    const storedSessionData = retrieveSessionData();
+
+    if (storedSessionData) {
+      storedSessionData.paymentStatus = "success";
+
+      // Update the session data in local storage
+      localStorage.setItem("sessionData", JSON.stringify(storedSessionData));
+    }
+  };
+ 
   return (
     <div className={styles.cart}>
       <div
@@ -88,7 +131,16 @@ const Cart = () => {
           <h2>{totalPrice}$</h2>
         </div>
         <div className={styles.btn}>
-          <button onClick={handleCheckout}>Checkout</button>
+          {isLoggedIn? (
+            // User is logged in, display regular checkout button
+            <button onClick={handleCheckout}>Checkout</button>
+          ) : (
+            // User is not logged in, display login form popup
+            <>
+              <button onClick={handleCheckout}>Login to Checkout</button>
+            
+            </>
+          )}
         </div>
       </div>
     </div>

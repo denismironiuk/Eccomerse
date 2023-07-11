@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   userId: {
-    type: String,
-    
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   paymentIntentId:{type:String},
   products: [
@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
         type: String
       },
       price: {
-        type: String
+        type: Number
       },
       img: {
         type: String

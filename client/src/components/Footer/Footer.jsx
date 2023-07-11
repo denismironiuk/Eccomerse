@@ -22,7 +22,7 @@ const Footer = () => {
           <span>Cookies</span>
         </div>
         <div className={`${styles.item} ${styles.item__mobile}`}>
-          <h1 className="h1">About</h1>
+          <h1 >About</h1>
           <span className="span">
             Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do
             eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor sit

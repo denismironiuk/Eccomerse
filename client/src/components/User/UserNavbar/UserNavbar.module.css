@@ -1,0 +1,47 @@
+.container{
+
+    min-height: 100%;
+    padding: 1rem;
+    border-right: 1px solid grey;
+}
+.container .sticky{
+    position: sticky;
+    
+}
+.container .logo__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    
+}
+.container ul{
+   
+    padding: 2.4rem 0;
+  
+}
+.container ul li a , .container ul button{
+    display: block;
+    width: 100%;
+    padding: 0.4rem 1.6rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    text-align: start;
+    
+}
+
+.container a.active , .container a:hover{
+    background-color: #6A6F73;
+    color: white;
+}
+.container .nav button{
+
+}
+
+@media screen and (min-width:700px) {
+    .container{
+        
+       
+        
+    }
+}

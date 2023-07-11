@@ -3,28 +3,28 @@ const Product = require('../models/index');
 const Subcategory = require('../models/SubCategory');
 const fs = require('fs');
 
-// // Configuration 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_API_NAME,
-//   api_key:process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET_KEY
-// });
 
-exports.getProducts = (req, res, next) => {
-  Product.find()
-    .populate('subcategory')
-    .populate('category')
-    .then(products => {
-      res.status(200).json({
-        products: products
-      });
-    })
-    .catch(err => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+exports.getProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find()
+      .populate('subcategory')
+      .populate('category');
+
+    if (!products) {
+      const error = new Error('Products not found');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({
+      products: products,
     });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
 exports.getSingleProduct = (req, res, next) => {
@@ -50,6 +50,31 @@ exports.getSingleProduct = (req, res, next) => {
     });
 };
 
+exports.getLastAddedProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find()
+    .populate('subcategory')
+      .populate('category')
+      .sort({ createdAt: -1 })
+     // Sort by descending order of createdAt
+     
+
+    if (!products) {
+      const error = new Error('Products not found');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({
+      products: products,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
 
 exports.getFilteredProducts = (req, res, next) => {
   const { catId } = req.params; // Extract category ID from URL params

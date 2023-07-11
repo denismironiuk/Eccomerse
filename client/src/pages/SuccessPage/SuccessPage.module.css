@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:60rem ;
+    
+    
+}
+.container h1 , .container p{
+    text-align: center;
+    
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+.container h1{
+    text-transform: none;
+}
+
+.container button{
+    padding: 0.7rem 1.5rem;
+    background-color: white;
+    color: black;
+   
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+}

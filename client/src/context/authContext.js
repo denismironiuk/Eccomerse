@@ -1,48 +1,57 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 
 
-const AuthContext=React.createContext({
-    token:'',
- 
-    isLoggedIn:false,
-    login:(token)=>{},
-    logout:()=>{}
+const AuthContext = React.createContext({
+    token: '',
+    userData: null,
+
+    isLoggedIn: false,
+    login: (token, userData) => { },
+    updateUser: (userData) => {},
+    logout: () => { }
 
 })
 
-export const AuthContextProvider=(props)=>{
-    const initialToken=localStorage.getItem('token')
-    
-    const[token,setToken]=useState(initialToken)
-    
+export const AuthContextProvider = (props) => {
+    const initialToken = localStorage.getItem('token')
+    const initialUserData = JSON.parse(localStorage.getItem('userData'));
+    const [token, setToken] = useState(initialToken)
+    const [userData, setUserData] = useState(initialUserData);
 
-    const userIsLoggedIn=!!token
+    const userIsLoggedIn = !!token
 
-    const loginHandler=(token)=>{
+    const loginHandler = (token, newUserData) => {
         setToken(token)
-      
-        localStorage.setItem('token',token)
-       
-        
+        setUserData(newUserData);
+        localStorage.setItem('token', token)
+        localStorage.setItem('userData', JSON.stringify(newUserData));
+
+
+    }
+    const updateUser=(newUserData)=>{
+        setUserData(newUserData);
+        localStorage.setItem('userData', JSON.stringify(newUserData));
     }
 
-    const logout=()=>{
+    const logout = () => {
         setToken(null)
-       
+        setUserData(null);
         localStorage.removeItem('token')
-      
+        localStorage.removeItem('userData');
+
     }
 
-    const contextValue={
-        token:token,
-       
-        isLoggedIn:userIsLoggedIn,
-        login:loginHandler,
-        logout:logout
+    const contextValue = {
+        token: token,
+        userData: userData,
+        isLoggedIn: userIsLoggedIn,
+        login: loginHandler,
+        updateUser,
+        logout: logout
     }
 
 
-return  <AuthContext.Provider value={contextValue}>{props.children}</AuthContext.Provider>
+    return <AuthContext.Provider value={contextValue}>{props.children}</AuthContext.Provider>
 }
 
 export default AuthContext;
