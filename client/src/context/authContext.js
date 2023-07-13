@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { redirect } from 'react-router-dom';
+import { emptyCardSuccess } from '../redux/cartReducer';
 
 
 const AuthContext = React.createContext({
@@ -38,6 +41,7 @@ export const AuthContextProvider = (props) => {
         setUserData(null);
         localStorage.removeItem('token')
         localStorage.removeItem('userData');
+      
 
     }
 

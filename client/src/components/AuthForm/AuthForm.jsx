@@ -1,92 +1,115 @@
-import {
-  Form,
-  Link,
-  useSearchParams,
-  useActionData,
-  useNavigation,
-} from "react-router-dom";
-
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { CircularProgress } from "@mui/material"; // Import CircularProgress from MUI
 import classes from "./AuthForm.module.css";
 import { useState } from "react";
 
-function AuthForm({ onSubmitHandler }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const data = useActionData();
-  const navigation = useNavigation();
+function AuthForm({ onSubmitHandler, data, setError }) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    getValues,
+  } = useForm();
+  const navigate = useNavigate();
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
-  const isSubmitting = navigation.state === "submitting";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = {
-      email,
-      password,
-      name
-    };
+  const shouldShowEmptyError = isSubmitted && Object.values(getValues()).every((value) => value.trim() === "");
 
-    onSubmitHandler(data);
-    setPassword("");
-    setEmail("");
+  const onSubmit = async (formData) => {
+    setIsSubmitted(true);
+    try {
+      await onSubmitHandler(formData);
+      reset();
+      navigate("/");
+    } catch (error) {
+      setError(error);
+    }
+    setIsSubmitted(false);
+  };
+
+  const handleLinkClick = () => {
+    setError(null);
+    setIsSubmitted(false);
+    reset();
   };
 
   return (
     <div className={classes.container}>
-      <form onSubmit={handleSubmit} className={classes.form}>
-        <h1>{isLogin ? "Log in" : "Create a new user"}</h1>
-        {data && data.error && (
-          <ul>
-            {Object.values(data.error).map((err) => (
-              <li key={err}>{err.msg}</li>
-            ))}
-          </ul>
-        )}
-        {data && data.message && <p>{data.message}</p>}
+      <h1>Login</h1>
+      {data && data.message && <p className={classes.error}>{data.message}</p>}
+      {data && data.error && (
+        <ul>
+          {data.error.map((error, index) => (
+            <li key={index}>
+              <p className={classes.error}>{error.msg}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} method="POST" className={classes.form}>
         {!isLogin && (
-          <p>
-            <label htmlFor="image">Name</label>
+          <div>
+            <label htmlFor="name">Name</label>
             <input
-              id="password"
+              id="name"
               type="text"
-              name="password"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
+              {...register("name", {
+                required: "Please enter your name",
+                pattern: {
+                  value: /^\S+$/,
+                  message: "Please enter only your name",
+                },
+              })}
+              className={shouldShowEmptyError && getValues("name") === "" ? classes.errorInput : ""}
             />
-          </p>
+            {errors.name && <p className={classes.error}>{errors.name.message}</p>}
+          </div>
         )}
-        <p>
+        <div>
           <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            {...register("email", {
+              required: "Please enter your email",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Please enter a valid email address",
+              },
+            })}
+            className={shouldShowEmptyError && getValues("email") === "" ? classes.errorInput : ""}
           />
-        </p>
-        <p>
-          <label htmlFor="image">Password</label>
+          {errors.email && <p className={classes.error}>{errors.email.message}</p>}
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            {...register("password", {
+              required: "Please enter your password",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
+            })}
+            className={shouldShowEmptyError && getValues("password") === "" ? classes.errorInput : ""}
           />
-        </p>
+          {errors.password && <p className={classes.error}>{errors.password.message}</p>}
+        </div>
 
         <div className={classes.actions}>
-          <Link to={`?mode=${isLogin ? "signup" : "login"}`} type="button">
+          <Link to={`?mode=${isLogin ? "signup" : "login"}`} type="button" onClick={handleLinkClick}>
             {isLogin ? "Create new user" : "Login"}
           </Link>
-          <button disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Save"}
+          <button type="submit">
+            {isSubmitted ? <CircularProgress size={24} color="inherit" /> : "Submit"}
           </button>
         </div>
       </form>

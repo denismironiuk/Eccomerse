@@ -13,10 +13,7 @@ const Order = ({order}) => {
         try {
             setIsLoading(true);
           const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/order/${invoiceId}/pdf`)
-           
-          console.log(response)
-         
-          // Handle the response, e.g., save the PDF or display it in the browser
+       
          if(response.ok){
             const blob = await response.blob();
             console.log(blob)

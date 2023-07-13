@@ -43,7 +43,7 @@ const AsidePanel = ({
               {categories.map((category) => {
                 return (
                   <li key={category._id}>
-                    <Link
+                    <Link onClick={handleMenu}
                       className={styles.link}
                       to={`products/${category.categoryName}/${category._id}`}
                     >

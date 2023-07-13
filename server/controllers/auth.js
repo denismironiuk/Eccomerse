@@ -48,7 +48,11 @@ exports.signup = async (req, res, next) => {
     res.status(201).json({
       message: 'User created',
       token: token,
-      user: savedUser,
+      user: {
+        name:savedUser.name,
+        email:savedUser.email,
+        image:savedUser.image
+      },
       cart: {
         items: cartObj.items,
         totalPrice: cartObj.totalPrice,
@@ -69,7 +73,13 @@ exports.login = async (req, res, next) => {
   let loadedUserData;
 
   try {
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error('Validation failed');
+      error.statusCode = 422;
+      error.data = errors.array();
+      throw error;
+    }
     
     // Find the user by email
     const user = await User.findOne({ email: email });
@@ -110,7 +120,12 @@ exports.login = async (req, res, next) => {
     // Return the response with the token, user ID, and cart information
     res.status(200).json({
       token,
-      user: loadedUserData,
+      user: {
+        name:loadedUserData.name,
+        email:loadedUserData.email,
+        image:loadedUserData.image
+
+      },
       cart: {
         items: cartObj.items,
         totalPrice: cartObj.totalPrice,

@@ -1,10 +1,26 @@
 import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import UserLogo from '../../UI/UserLogo/UserLogo'
 import styles from './UserNavbar.module.css'
 import AuthContext from '../../../context/authContext'
+import { useDispatch } from 'react-redux'
+import { emptyCardSuccess } from '../../../redux/cartReducer'
+
 const UserNavbar = () => {
-  const {userData}=useContext(AuthContext)
+const navigate=useNavigate()
+ const dispatch=useDispatch()
+  const {userData,logout}=useContext(AuthContext)
+
+  const handleLogout = () => {
+    navigate('/cart');
+    dispatch(emptyCardSuccess());
+   
+    logout();
+   
+   
+    
+  };
+ 
   return (
     <div className={styles.container}>
       <div className={styles.sticky}>
@@ -24,7 +40,7 @@ const UserNavbar = () => {
         <NavLink to={'/dashboard/purchase-history'} className={({isActive})=>isActive ?(styles.active):('')}>Orders Detail </NavLink>
         </li>
         <li>
-        <button >Logout </button>
+        <button onClick={handleLogout}  >Logout </button>
         </li>
         </ul> 
       </div>

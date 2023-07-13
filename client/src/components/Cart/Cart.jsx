@@ -17,7 +17,7 @@ const Cart = () => {
   const products = useSelector((state) => state.cart.items);
   const { totalQuantity, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  console.log(products);
+
   if (totalQuantity === 0)
     return (
       <div className={styles.empty}>

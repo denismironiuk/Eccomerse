@@ -2,7 +2,7 @@ import styles from "./Invoice.module.css";
 import Logo from "../../../../../assets/EasyStore.webp";
 
 const Invoice = ({ invoice }) => {
-  console.log(invoice);
+ 
   return (
     <div className={styles["container"]}>
       <div className={styles.wrapper}>
@@ -39,7 +39,7 @@ const Invoice = ({ invoice }) => {
           <span>Total Price</span>
         </div>
         {invoice?.products.map((product) => (
-          <div className={`${styles.third__block}`}>
+          <div key={product._id} className={`${styles.third__block}`}>
             <p>{product.name}</p>
             <p>{product.quantity}</p>
             <p>${product.price}</p>
@@ -48,7 +48,7 @@ const Invoice = ({ invoice }) => {
         ))}
         <div className={`${styles.fourth__block} `}>
             <h2>Total Paid:</h2>
-            <p>56$</p>
+            <p>${invoice?.total/100}</p>
             </div>
       </div>
     </div>

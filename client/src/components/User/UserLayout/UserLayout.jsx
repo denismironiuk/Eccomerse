@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./UserLayout.module.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserNavbar from "../UserNavbar/UserNavbar";
 import { useContext } from "react";
 import AuthContext from "../../../context/authContext";
+
 const UserLayout = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  if (!isLoggedIn) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className={styles.container}>

@@ -4,14 +4,15 @@ import AuthContext from "../../context/authContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useState } from "react";
 import { replaceCart } from "../../redux/cartReducer";
+import LoadingPage from "../LoadingPage/LoadingPage";
 
 const AuhenticationPage = () => {
   const cartData = useSelector((state) => state.cart);
   const { login } = useContext(AuthContext);
-
+const [isloading,setIsLoading] =useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [data, setdata] = useState([]);
+  const [errData, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode") || "login";
 
@@ -19,7 +20,10 @@ const AuhenticationPage = () => {
     throw json({ message: "Unsupported mode" }, { status: 422 });
   }
 
+  console.log(errData)
+
   const onSubmitHandler = async (data) => {
+  
     let userData;
     if (mode === "login") {
       userData = {
@@ -27,17 +31,15 @@ const AuhenticationPage = () => {
         password: data.password,
         cart: cartData,
       };
-    }
-    else{
-      userData={
+    } else {
+      userData = {
         name: data.name,
         email: data.email,
         password: data.password,
         cart: cartData,
-      }
+      };
     }
-    
-
+setIsLoading(true)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/${mode}`,
@@ -49,43 +51,53 @@ const AuhenticationPage = () => {
           body: JSON.stringify(userData),
         }
       );
+      if(!response.ok){
+        
+        const errorData = await response.json();
+        setError(errorData)
+        throw new Error(errorData);
+      }
 
-      if (response.status === 422 || response.status === 401) {
-        return response;
-      }
-      if (!response.ok) {
-        throw json(
-          { message: "Could not authenticate user." },
-          { status: 500 }
-        );
-      }
+      
+      
 
       const resData = await response.json();
       const { token, cart, user } = resData;
       login(token, user);
 
-      
-              const cartItems = cart.items
-              const persistedState = {
-                items: cartItems,
-                totalPrice: resData.cart.totalPrice,
-                totalQuantity: resData.cart.totalQuantity,
-              };
-            
-         
+      const cartItems = cart.items;
+      const persistedState = {
+        items: cartItems,
+        totalPrice: resData.cart.totalPrice,
+        totalQuantity: resData.cart.totalQuantity,
+      };
 
       dispatch(replaceCart(persistedState));
-      if(mode === "login"){
-        navigate('/');
+      if (mode === "login") {
+        navigate("/");
       }
-      navigate(-1);
+      setError(null)
+      navigate("/");
+      setIsLoading(false)
     } catch (err) {
-      setdata(err);
+    if (err.response && err.response.data && err.response.data.error) {
+      const errorMessage = err.response.data.error[0].msg;
+      console.log(errorMessage);
+      
+    } else {
+      console.log(err.message);
+     
     }
-  };
+    }finally{
+      
+    }
+  
+
+  }
   return (
     <div>
-      <AuthForm onSubmitHandler={onSubmitHandler} data={data} />
+      <AuthForm onSubmitHandler={onSubmitHandler} data={errData} setError={setError} />
+      
     </div>
   );
 };

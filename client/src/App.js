@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home,{loader as products} from "./pages/Home/Home";
+import Home, { loader as products } from "./pages/Home/Home";
 import Product, { loader as singleProduct } from "./pages/Product/Product";
 import Products, { loader as productsLoader } from "./pages/Products/Products";
 import "./app.css"
@@ -27,14 +27,14 @@ const router = createBrowserRouter([
 
     children: [
       {
-        index: true, 
+        index: true,
         element: <Home />,
-        loader:products
+        loader: products
       },
       {
         path: "auth",
         element: <AuhenticationPage />,
-       
+
       },
       {
         path: "cart",
@@ -48,14 +48,14 @@ const router = createBrowserRouter([
         path: "/error",
         element: <ErrorPaymentPage />,
       },
-     {
-      path:"/dashboard/purchase-history",
-      element:<OrdersPage />,loader:checkAuthLoader
-     },
-     {
-      path:"/dashboard/purchase-history/invoice-transaction/:invoiceId",
-      element:<InvoicePage />,loader:checkAuthLoader
-     },
+      {
+        path: "/dashboard/purchase-history",
+        element: <OrdersPage />, loader: checkAuthLoader
+      },
+      {
+        path: "/dashboard/purchase-history/invoice-transaction/:invoiceId",
+        element: <InvoicePage />, loader: checkAuthLoader
+      },
 
 
       {
@@ -68,23 +68,24 @@ const router = createBrowserRouter([
       },
       {
         path: "/user",
-        element:<UserLayout/>,
-        children:[
+        element: <UserLayout />,
+        loader: checkAuthLoader,
+        children: [
           {
-            index:true, 
-            element:<UserAvatarPage/>,
-            loader:checkAuthLoader
+            index: true,
+            element: <UserAvatarPage />,
+            loader: checkAuthLoader,
           },
-        {
-          path:"account",element:<AccountSecurityPage/>,loader:checkAuthLoader
-        },
-        {
-          path:"orders",element:<OrdersPage/>,loader:checkAuthLoader
-        },{
-          path:"orders/invoice-transaction/:invoiceId",element:<InvoicePage/>
-        }
+          {
+            path: "account", element: <AccountSecurityPage />, loader: checkAuthLoader,
+          },
+          {
+            path: "orders", element: <OrdersPage />, loader: checkAuthLoader,
+          }, {
+            path: "orders/invoice-transaction/:invoiceId", element: <InvoicePage />, loader: checkAuthLoader,
+          }
         ]
-        
+
       },
     ],
   },
@@ -120,7 +121,7 @@ function App() {
                 totalPrice: resData.cart.totalPrice,
                 totalQuantity: resData.cart.totalQuantity,
               };
-            
+
               dispatch(replace(persistedState))
             }
           } catch (e) {
@@ -130,7 +131,7 @@ function App() {
         retrieveCart()
       }
       else {
-        console.log('second render')
+    
         async function replaceCart(cartItems) {
 
 
@@ -165,9 +166,9 @@ function App() {
   }, [cart, dispatch])
 
   return (
-    <div>
+    
       <RouterProvider router={router} />
-    </div>
+   
   );
 }
 

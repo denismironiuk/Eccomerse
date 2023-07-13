@@ -30,7 +30,7 @@ const Home = () => {
 
   const{lastAdded,products}=useLoaderData()
 
-  console.log(lastAdded)
+
 
   return (
     <div className={styles.home}>
