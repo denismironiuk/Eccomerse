@@ -85,8 +85,8 @@ const addTostripe = async (req, res, next) => {
       enabled: true,
     },
     mode: 'payment',
-    success_url: 'https://eccomerse-deplyment-demo.web.app/success?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url: 'https://eccomerse-deplyment-demo.web.app/cart',
+    success_url:process.env.STRIPE_SUCCESS_URL,
+    cancel_url: process.env.STRIPE_CANCEL_URL,
   });
 
   res.json({
