@@ -17,7 +17,7 @@ const Cart = () => {
   const products = useSelector((state) => state.cart.items);
   const { totalQuantity, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-
+console.log(products)
   if (totalQuantity === 0)
     return (
       <div className={styles.empty}>
@@ -47,15 +47,15 @@ const Cart = () => {
                 return {
                   id: product._id,
                   name: product.name,
-                  price: product.price,
+                  price: Math.floor(product.price),
                   quantity: product.quantity,
-                  img: product.img,
+                  img: product.img
                 };
               }),
             }),
           }
         );
-
+console.log(response)
         if (!response.ok) {
           throw new Error("Failed to create checkout session");
         }

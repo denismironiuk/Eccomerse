@@ -27,9 +27,9 @@ const addTostripe = async (req, res, next) => {
             id: item.id.toString(),
           },
         },
-        unit_amount: +item.price * 100,
-      },
-      quantity: item.quantity,
+        unit_amount: item.price * 100, 
+      }, 
+      quantity:  Math.round(item.quantity),
     };
   });
 
@@ -39,7 +39,7 @@ const addTostripe = async (req, res, next) => {
     },
     shipping_options: [
       {
-        shipping_rate_data: {
+        shipping_rate_data: { 
           type: 'fixed_amount',
           fixed_amount: {
             amount: 0,
@@ -127,7 +127,7 @@ const stripeWebhook = async (req, res) => {
   if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer).then(customer => {
       const userData = customer.metadata.userId;
-      console.log(userData);
+    
       Cart.findOneAndUpdate({ user: userData }, { items: [], totalQuantity: 0, totalPrice: 0 }, { new: true })
         .then(response => {
           return response.save()
@@ -137,12 +137,6 @@ const stripeWebhook = async (req, res) => {
         })
 
       createOrder(customer, data)
-
-      
-
-
-
-
 
       })
 

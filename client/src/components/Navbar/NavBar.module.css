@@ -3,14 +3,14 @@
     background-color: #213343;
     color: white;
    
-   
+  
     color: white;
     position: relative;
   }
   
   .navbar .wrapper {
     width: 100%;
-    padding: 1.625rem ;
+    padding:1.5rem 2.625rem ;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,6 +37,7 @@ font-size: 2rem;
 
   .navbar .item__auth{
     color:white;
+    font-size: 1.5rem;
   }
   
   @keyframes fadeIn {
@@ -48,17 +49,6 @@ font-size: 2rem;
     }
   }
   
-  @media screen and (max-width: 37.5rem) {
-    .navbar .wrapper .menu {
-      display: block;
-      visibility: visible;
-    }
-    .navbar .wrapper .left  {
-      display: none;
-      visibility: hidden;
-    }
-    
-  }
   
   .navbar .wrapper .item {
     display: flex;
@@ -101,21 +91,13 @@ font-size: 2rem;
     align-items: center;
     gap: 1.5625rem;
   }
-  
-  @media screen and (max-width: 37.5rem) {
-    .navbar .wrapper .menu {
-      display: block;
-      visibility: visible;
-    }
-    .navbar .wrapper .left {
-      display: none;
-      visibility: hidden;
-    }
-  }
+
+
   
   .navbar .wrapper .center {
     font-size: 1.875rem;
     letter-spacing: 0.125rem;
+   
   }
   
   .navbar .wrapper .center, .link {
@@ -123,7 +105,7 @@ font-size: 2rem;
     justify-content: center;
     align-items: center;
     gap: 1.875rem;
-    font-size: 2rem;
+  
     
   }
   
@@ -137,3 +119,18 @@ font-size: 2rem;
     text-decoration: none;
   }
   
+
+  @media screen and (max-width: 45.5rem) {
+    .navbar .wrapper .menu {
+      display: block;
+      visibility: visible;
+    }
+    .navbar .wrapper .left {
+      display: none;
+      visibility: hidden;
+    }
+    .navbar .wrapper .center{
+      display: none;
+      visibility: hidden;
+    }
+  }

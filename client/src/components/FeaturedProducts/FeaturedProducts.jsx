@@ -50,9 +50,9 @@ const FeaturedProducts = ({ type,data }) => {
                 style={{ width: "25%", height: "auto", margin: "0 auto" }}
               >
                 <Link
-                  to={`/product/${item.category.categoryName}/${item.subcategory.subcategoryName}/${item._id}`}
+                  to={`/product/${item.category.categoryName}/${item.subcategory?.subcategoryName}/${item._id}`}
                 >
-                  <img src={item.image} alt="" />
+                  <img src={item?.image?.secure_url} alt="" />
                 </Link>
               </SwiperSlide>
             ))}

@@ -1,13 +1,25 @@
 .filterItem {
-    
+  width: 100%;
+ 
+    background-color: white;
     padding: 20px 0;
     margin-bottom: 20px;
+    position: absolute;
+    top:120%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 999;
   }
   
-  .inputItem {
-    margin: 10px;
+  .inputItem ,h2 {
+    padding:0.5rem 1rem ;
   }
   
   .inputItem input {
     margin-right: 10px;
+  }
+
+  .checked {
+    /* Add your styles for the checked state */
+    /* For example, change the background color */
+    background-color: lightblue;
   }

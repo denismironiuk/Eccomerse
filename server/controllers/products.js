@@ -1,8 +1,13 @@
 const cloudinary = require('cloudinary').v2;
 const Product = require('../models/index');
 const Subcategory = require('../models/SubCategory');
+const streamifier = require('streamifier');
 const fs = require('fs');
-
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_API_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY
+});
 
 exports.getProducts = async (req, res, next) => {
   try {
@@ -21,7 +26,7 @@ exports.getProducts = async (req, res, next) => {
     });
   } catch (err) {
     if (!err.statusCode) {
-      err.statusCode = 500;
+      err.statusCode = 500; 
     }
     next(err);
   }
@@ -124,40 +129,59 @@ exports.getFilteredProducts = (req, res, next) => {
 
 exports.addProduct = async (req, res, next) => {
   const { name, description, price, category, subcategory } = req.body;
-  const image = req.file;
-console.log(image);
-return
+
+console.log(typeof subcategory)
   try {
-    // Upload image to Cloudinary
-    const result = await cloudinary.uploader.upload(image, {
-      folder: 'images'
+    const existingProduct = await Product.findOne({ name });
+
+    if (existingProduct) {
+      return res.status(400).json({ message: 'Product already exists' });
+    }
+
+    const bufferStream = streamifier.createReadStream(req.file.buffer);
+
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: 'product-images' },
+        async (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+
+      bufferStream.pipe(uploadStream);
     });
 
-    // Create a new product object with the image URL
     const product = new Product({
       name,
       description,
       price,
       category,
-      subcategory,
-      image: result.secure_url, // Image URL from Cloudinary
+      subcategory:subcategory !== '' ? subcategory : null,
+      image: {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      },
     });
 
-    // Save the product to the database
     const savedProduct = await product.save();
+if(subcategory && subcategory !== ''){
+  await Subcategory.findByIdAndUpdate(subcategory, {
+    $push: { products: product._id },
+  });
+}
+    
 
-    // Find the subcategory and update its products array
-    const updatedSubcategory = await Subcategory.findByIdAndUpdate(
-      subcategory,
-      { $push: { products: savedProduct._id } },
-      { new: true }
-    );
 
-    res.status(201).json({ success: true, message: 'Product added successfully' });
+    res.status(201).json({ success: true, message: 'Product added successfully', product: savedProduct });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Unable to add product' });
   }
 };
+
 
 exports.updateProduct = async (req, res, next) => {
   const { productId } = req.params;

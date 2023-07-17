@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css"
 import Cart from "./components/Cart/Cart";
 import SuccessPage from "./pages/SuccessPage/SuccessPage";
 import ErrorPaymentPage from "./pages/ErrorPaymentPage/ErrorPaymentPage";
-import Layout, { catLoader, } from "./components/Layout/Layout";
+import Layout, { loader } from "./components/Layout/Layout";
 import AuhenticationPage from "./pages/Authentication/Auhentication";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,12 +18,14 @@ import AccountSecurityPage from "./pages/UserAccount/Account/AccountSecurity";
 import OrdersPage from "./pages/UserAccount/Orders/Orders";
 import { checkAuthLoader } from "./components/utils/auth";
 import InvoicePage from "./pages/UserAccount/Orders/Invoice/InvoicePage";
+
+import SearchPage from "./pages/SearchPage/SearchPage";
 let firstRender = false
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    loader: catLoader,
+    loader: loader,
 
     children: [
       {
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
         element: <Home />,
         loader: products
       },
+      {path:'search',
+      element:<SearchPage/>
+      },
+
       {
         path: "auth",
         element: <AuhenticationPage />,

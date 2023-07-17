@@ -1,6 +1,19 @@
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema(
+const Schema = mongoose.Schema;
+
+const imageSchema = new Schema({
+  public_id: {
+    type: String,
+    required: true,
+  },
+  secure_url: {
+    type: String,
+    required: true,
+  },
+});
+
+const productSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,8 +30,8 @@ const productSchema = new mongoose.Schema(
       min: 0,
     },
     image:{
-      type: String,
-      required: true,
+      type: imageSchema,
+     
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +41,8 @@ const productSchema = new mongoose.Schema(
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'SubCategory',
-      required: true,
+      default: null,
+     
     },
   },
   {

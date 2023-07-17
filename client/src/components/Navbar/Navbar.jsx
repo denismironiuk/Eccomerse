@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import StoreLogo from '../../assets/EasyStore.webp'
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import Cart from "../Cart/Cart";
@@ -9,8 +10,10 @@ import AuthContext from "../../context/authContext";
 import { emptyCard, emptyCardSuccess } from "../../redux/cartReducer";
 import AsidePanel from "../AsidePanel/AsidePanel";
 import UserLogo from "../UI/UserLogo/UserLogo";
+import Search from "./Search/Search";
+import CategoriesMenu from "./CategoriesMenu/CategoriesMenu";
 
-const Navbar = ({ categories }) => {
+const Navbar = ({ categories,products }) => {
   const { isLoggedIn, logout, userData } = useContext(AuthContext);
   const dispatch = useDispatch();
   const navigate=useNavigate()
@@ -50,23 +53,14 @@ function handleLogout() {
         />
         <div className={styles.center}>
           <Link className={styles.link} to="/">
-            Shopping Store
+            <img src={StoreLogo} alt="" width={"50px"}/>
           </Link>
+
+          <CategoriesMenu categories={categories}/>
         </div>
-        <div className={styles.left}>
-          {categories.map((category) => {
-            return (
-              <div className={styles.item} key={category._id}>
-                <Link
-                  className={styles.link}
-                  to={`products/${category.categoryName}/${category._id}`}
-                >
-                  {category.categoryName}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+     
+
+       <Search products={products}/>
 
         <div className={styles.icons}>
           <div className={styles.cartIcon}>
@@ -85,11 +79,7 @@ function handleLogout() {
             </div>
           )}
           {isLoggedIn && (
-            // <div className={styles.item__action}>
-
-            //     <button onClick={handleLogout}>Logout</button>
-
-            // </div>
+          
             <div>
               <Link to={`user`}>
                 <UserLogo content="header_logo" userData={userData} />

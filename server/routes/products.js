@@ -1,4 +1,5 @@
 const express = require('express')
+const upload = require('./../helpers/multer/multer')
 
 const { getProducts, addProduct, getFilteredProducts, getSingleProduct,getLastAddedProducts } = require('../controllers/products');
 const { addTostripe } = require('../controllers/stripe');
@@ -14,7 +15,7 @@ router.get('/products', getProducts)
 router.get('/product/:prodId', getSingleProduct)
 
 router.get('/products/:catId', getFilteredProducts)
-router.post('/product', addProduct)
+router.post('/product',upload.single('image'), addProduct)
 router.get('/productLast', getLastAddedProducts)
 
 //Cart

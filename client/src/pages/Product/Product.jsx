@@ -6,7 +6,7 @@ import { addItemToCart } from "../../redux/cartReducer";
 
 const Product = () => {
   const product = useLoaderData();
-
+console.log(product)
   const dispatch = useDispatch();
 
   return (
@@ -14,7 +14,7 @@ const Product = () => {
       <>
         <div className={styles.left}>
           <div className={styles.mainImg}>
-            <img src={product.image} alt="" />
+            <img src={product?.image?.secure_url} alt="" />
           </div>
         </div>
         <div className={styles.right}>
@@ -31,7 +31,7 @@ const Product = () => {
                   name: product.name,
                   desc: product.description,
                   price: +product.price,
-                  img: product.image,
+                  img: product.image.secure_url,
                 })
               )
             }

@@ -19,13 +19,7 @@ exports.createOrder = async (customer, data) => {
       const savedOrder = await newOrder.save();
       
         const populatedOrder = await savedOrder.populate('userId')
-       
-     console.log(populatedOrder.products)
-     console.log(items)
-     
-
-
-   
+  
       const invoiceName='invoice-'+ savedOrder._id.toString() + '.pdf'
       const invoice=generateInvoiceObject(populatedOrder.products, populatedOrder.createdAt)
 
