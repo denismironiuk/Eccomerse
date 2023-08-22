@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import "./CustomSelect.css";
 
-const CustomSelect = ({setSort}) => {
+const CustomSelect = ({setSort,sort}) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = [
-    { key: "desc", value: "Price (Highest first)" },
-    { key: "asc", value: "Price (Lowest first)" },
+    { key: "desc", value:"Price (Highest first)"   },
+    { key: "asc", value: "Price (Lowest first)"},
   ];
-  const [selectedOption, setSelectedOption] = useState(options[0]);
 
+  const [selectedOption, setSelectedOption] = useState(options[1]);
+console.log(selectedOption)
   const toggleOptions = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-    setSort(option.key);
-  };
+const handleOptionSelect = (option) => {
+ 
+  setSelectedOption(option);
+  setIsOpen(false);
+  setSort(option.key)
+  console.log(option.key)
+};
 
   return (
     <div className={`custom-select ${isOpen ? "active" : ""}`}>

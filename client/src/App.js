@@ -20,6 +20,7 @@ import { checkAuthLoader } from "./components/utils/auth";
 import InvoicePage from "./pages/UserAccount/Orders/Invoice/InvoicePage";
 
 import SearchPage from "./pages/SearchPage/SearchPage";
+import Test from "./components/Test";
 let firstRender = false
 const router = createBrowserRouter([
   {
@@ -173,7 +174,8 @@ function App() {
 
   return (
     
-      <RouterProvider router={router} />
+      // <RouterProvider router={router} />
+     < Test/>
    
   );
 }

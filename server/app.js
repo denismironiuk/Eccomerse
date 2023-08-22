@@ -12,6 +12,7 @@ const compression =require('compression')
 const PORT = process.env.PORT || 8080;
 const prodRoutes = require('./routes/products');
 const authRoutes=require('./routes/auth')
+const adminRoutes=require('./routes/admin')
 const catRoutes=require('./routes/category')
 const subCatRoutes=require('./routes/subcategory')
 const orderRoutes=require('./routes/order')
@@ -51,6 +52,7 @@ app.use((req, res, next) => {
 
 app.use('/api',orderRoutes)
 app.use('/api',prodRoutes)
+app.use('/api',adminRoutes)
 app.use('/api',authRoutes)
 app.use('/api',cartRoutes)
 app.use('/api',catRoutes)

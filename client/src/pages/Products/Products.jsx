@@ -9,30 +9,33 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 const Products = () => {
   const { subCat, products } = useLoaderData();
  
-  const [sort, setSort] = useState('desc');
+  const [sort, setSort] = useState('asc');
   const [selectedSubCats, setSelectedSubCats] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showCategories, setShowCategories] = useState()
 
-  const handleChange = useCallback(
+ 
+
+  const handleChange = 
     (id) => {
       setSelectedSubCats(id);
-    },
-    []
-  );
+    }
+    const handleChangeOrder = 
+    (key) => {
+      setSort(key);
+    }
+ 
   useEffect(() => {
-    // Filter the products based on the selected subcategories, price range, and sorting
     const filterProducts = () => {
-      let filteredProducts = products;
+      let filteredProducts = [...products];
 
       // Filter by selected subcategories
       if (selectedSubCats.length > 0) {
-        filteredProducts = filteredProducts.filter((product) => {
-          
-          return selectedSubCats.includes(product.subcategory._id);
-        });
+        filteredProducts = filteredProducts.filter((product) =>
+          selectedSubCats.includes(product.subcategory._id)
+        );
       }
-      
+
       // Sort the products
       if (sort === "asc") {
         filteredProducts.sort((a, b) => a.price - b.price);
@@ -44,8 +47,8 @@ const Products = () => {
     };
 
     filterProducts();
-  }, [selectedSubCats, products,  sort]);
-
+   
+  }, [products, sort,selectedSubCats ]);
  
   return (
    
@@ -65,13 +68,13 @@ const Products = () => {
     <div className={styles.filter__sort}>
       <div>
       <h2>Sort by</h2>
-     <CustomSelect setSort={setSort}/>
+     <CustomSelect setSort={handleChangeOrder}/>
      </div>
     </div>
   </div>
-      {/* <div className={styles["products-right"]}> */}
-        <List products={filteredProducts} />
-      {/* </div> */}
+      
+       {filteredProducts && <List products={filteredProducts} />} 
+     
 </div>
     
     
