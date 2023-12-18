@@ -1,5 +1,5 @@
 const cloudinary = require('cloudinary').v2;
-const Product = require('../models/index');
+const Product = require('../models/product');
 const Subcategory = require('../models/SubCategory');
 const streamifier = require('streamifier');
 const fs = require('fs');

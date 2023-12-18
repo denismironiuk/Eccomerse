@@ -42,7 +42,7 @@ const [isloading,setIsLoading] =useState(false)
 setIsLoading(true)
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/${mode}`,
+        `${process.env.REACT_APP_API_ENDPOINT}/${mode}`,
         {
           method: "POST",
           headers: {

@@ -8,7 +8,16 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-const FeaturedProducts = ({ type,data }) => {
+const FeaturedProducts = ({ type,data,error }) => {
+
+  if (error) {
+    return (
+      <div className={styles.error__container}>
+        <p>Error loading data: {error.message}</p>
+      </div>
+    );
+  }
+
   return (
     <section className={styles.featuredProducts}>
       <div className={styles.top}>
@@ -47,12 +56,12 @@ const FeaturedProducts = ({ type,data }) => {
             {data?.map((item) => (
               <SwiperSlide
                 key={item._id}
-                style={{ width: "25%", height: "auto", margin: "0 auto" }}
+                style={{ width: "25%", height: "300px", margin: "0 auto" }}
               >
                 <Link
                   to={`/product/${item.category.categoryName}/${item.subcategory?.subcategoryName}/${item._id}`}
                 >
-                  <img src={item?.image?.secure_url} alt="" />
+                  <img style={{ maxWidth: '100%', objectFit: 'contain', height: '100%' }} src={item?.image?.secure_url} alt="" />
                 </Link>
               </SwiperSlide>
             ))}

@@ -40,7 +40,7 @@ const AsidePanel = ({
 
             <div className={styles.categories}>
               <h2>Categories : </h2>
-              {categories.map((category) => {
+              {categories?.map((category) => {
                 return (
                   <li key={category._id}>
                     <Link onClick={handleMenu}

@@ -6,7 +6,7 @@ const SearchPage = () => {
    const[searchParams]=useSearchParams()
   const location = useLocation();
   console.log(searchParams.get("src"))
-  const filteredProducts = location.state.filteredProducts;
+  const filteredProducts = location?.state?.filteredProducts;
 
   return (
    <div className={styles.search__container}>

@@ -26,4 +26,9 @@
   justify-content: center;
   gap: 50px;
 }
- 
+.error__container{
+  text-align: center;
+ font-weight: bold;
+ font-size: 2rem;
+ color: red;
+}

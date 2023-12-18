@@ -7,7 +7,7 @@ const Search = ({ products }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showSearchBar, setShowSearchBar] = useState(true);
   const navigate = useNavigate();
-console.log(searchQuery.length)
+
 
   const handleSearch = (e) => {
     setShowSearchBar(true)
@@ -16,7 +16,7 @@ console.log(searchQuery.length)
     if (query === "") {
       setFilteredProducts([]);
     } else {
-      const filtered = products.filter((item) =>
+      const filtered = products?.filter((item) =>
         item.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredProducts(filtered);
@@ -28,7 +28,7 @@ console.log(searchQuery.length)
         setFilteredProducts([]);
       }
       else{
-        const filtered = products.filter((item) =>
+        const filtered = products?.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredProducts(filtered);
@@ -66,7 +66,7 @@ console.log(searchQuery.length)
           // className={`w-full mx-auto h-96 bg-white top-16 absolute left-0 z-50 overflow-y-scroll shadow-2xl scrollbar-hide cursor-pointer border-[1px] border-red-900`}
         >
           {searchQuery &&  
-            filteredProducts.map((item) => {
+            filteredProducts?.map((item) => {
               return (
                 <div
                   onClick={() =>
